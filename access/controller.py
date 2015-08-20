@@ -9,14 +9,7 @@ from elasticsearch.client import IndicesClient
 from xylose.scielodocument import Article, Journal
 
 ALLOWED_DOC_TYPES_N_FACETS = {
-    'journal': [
-        'collection',
-        'subject_areas',
-        'issn',
-        'status',
-        'included_at_year',
-    ],
-    'article': [
+    'articles': [
         'collection',
         'subject_areas',
         'languages',
@@ -24,6 +17,9 @@ ALLOWED_DOC_TYPES_N_FACETS = {
         'publication_year',
         'document_type',
         'issn',
+        'pid',
+        'access_date',
+        'access_year'
     ]
 }
 
@@ -41,12 +37,19 @@ def construct_aggs(aggs, size=0):
                 "terms": {
                     "field": field,
                     "size": 0
+                },
+                "aggs": {
+                    "access_total": {
+                        "sum": {
+                            "field": "access_total"
+                        }
+                    }
                 }
             }
         }
 
         if point:
-            point.setdefault('aggs', default)
+            point['aggs'].setdefault(field, default[field])
             return point['aggs'][field]
         else:
             data.setdefault('aggs', default)
@@ -94,14 +97,73 @@ class Stats(Elasticsearch):
 
         return data
 
-    def publication_search(self, parameters):
+    def access_search(self, parameters):
 
-        parameters['index'] = 'publication'
+        parameters['index'] = 'access_counter'
         query_result = self._query_dispatcher(**parameters)
 
         return query_result
 
-    def publication_stats(self, doc_type, aggs, filters=None):
+    def document(self, code, collection):
+
+        body = {
+            "query": {
+                "bool": {
+                    "must": [{
+                            "match": {
+                                "pid": code
+                            }
+                        },{
+                            "match": {
+                                "collection": collection
+                            }
+
+                        }
+
+                    ]
+                }
+            },
+            "aggs": {
+                "access_total": {
+                    "sum": {
+                        "field": "access_total"
+                    }
+                },
+                "access_html": {
+                    "sum": {
+                        "field": "access_html"
+                    }
+                },
+                "access_pdf": {
+                    "sum": {
+                        "field": "access_pdf"
+                    }
+                },
+                "access_abstract": {
+                    "sum": {
+                        "field": "access_abstract"
+                    }
+                },
+                "access_epdf": {
+                    "sum": {
+                        "field": "access_epdf"
+                    }
+                }
+            }
+        }
+
+        query_result = self._query_dispatcher(
+            index='accesses_counter',
+            doc_type='articles',
+            body=body,
+            size=0
+        )
+
+        response = query_result['aggregations']
+
+        return response
+
+    def access_stats(self, doc_type, aggs, filters=None):
 
         if not aggs:
             raise ValueError(
@@ -155,7 +217,7 @@ class Stats(Elasticsearch):
             }
 
         query_result = self._query_dispatcher(
-            index='publication',
+            index='accesses_counter',
             doc_type=doc_type,
             search_type='count',
             body=body

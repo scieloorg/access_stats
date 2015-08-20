@@ -58,7 +58,7 @@ setup(
     test_suite="nose.collector",
     entry_points="""\
     [paste.app_factory]
-    main = publication:main
+    main = access:main
     [console_scripts]
     accessstats_thriftserver = access.thrift.server:main
     """,

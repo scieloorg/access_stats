@@ -66,7 +66,9 @@ def stats(*args, **kwargs):
     if not 'hosts' in kwargs:
         kwargs['hosts'] = ['esa.scielo.org', 'esb.scielo.org']
 
-    return Stats(*args, **kwargs)
+    st  = Stats(*args, **kwargs)
+
+    return st
 
 class ServerError(Exception):
 
@@ -82,18 +84,18 @@ class Stats(Elasticsearch):
 
         try:
             data = self.search(*args, **kwargs)
-        except elasticsearch.SerializationError:
-            logging.error('ElasticSearch SerializationError')
-            raise ServerError()
+        except elasticsearch.SerializationError as e:
+            logging.exception(e)
+            raise e
         except elasticsearch.TransportError as e:
-            logging.error('ElasticSearch TransportError: %s' % e.error)
-            raise ServerError()
+            logging.exception(e)
+            raise e
         except elasticsearch.ConnectionError as e:
-            logging.error('ElasticSearch ConnectionError: %s' % e.error)
-            raise ServerError()
+            logging.exception(e)
+            raise e
         except Exception as e:
             logging.exception(e)
-            raise ServerError()
+            raise e
 
         return data
 

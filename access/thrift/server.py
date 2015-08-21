@@ -29,9 +29,13 @@ class Dispatcher(object):
             data = self._stats.access_stats(*args, **kwargs)
         except ValueError as e:
             logger.error(e.message)
-            raise access_stats_thrift.ValueError(message=e.message)
+            raise access_stats_thrift.ValueError(e.message)
         except ServerError as e:
-            raise access_stats_thrift.ServerError(message=e.message)
+            logger.exception(e)
+            raise access_stats_thrift.ServerError('Unknow Server Error')
+        except Exception as e:
+            logger.exception(e)
+            raise access_stats_thrift.ServerError('Unknow Server Error')
 
         return data
 
@@ -45,15 +49,20 @@ class Dispatcher(object):
             data = self._stats.access_search(params)
         except ValueError as e:
             logger.error(e.message)
-            raise access_stats_thrift.ValueError(message=e.message)
-        except ServerError as e:
-            raise access_stats_thrift.ServerError(message=e.message)
+            raise access_stats_thrift.ValueError(e.message)
+        except access_stats_thrift.ServerError as e:
+            logger.error(e)
+            raise access_stats_thrift.ServerError('Unknow Server Error')
+        except Exception as e:
+            logger.error(e)
+            raise access_stats_thrift.ServerError('Unknow Server Error')
+
 
         try:
             data_str = json.dumps(data)
         except ValueError as e:
             logger.error('Invalid JSON data: %s' % data_str)
-            raise access_stats_thrift.ValueError(message=e.message)
+            raise access_stats_thrift.ValueError(str(e))
 
         return data_str
 
@@ -66,8 +75,12 @@ class Dispatcher(object):
             raise access_stats_thrift.ServerError(
                 'Fail to retrieve data from server: %s' % err.message
             )
-        except ServerError as e:
-            raise access_stats_thrift.ServerError(message=e.message)
+        except access_stats_thrift.ServerError as e:
+            logger.exception(e)
+            raise access_stats_thrift.ServerError('Unknow Server Error')
+        except Exception as e:
+            logger.exception(e)
+            raise access_stats_thrift.ServerError('Unknow Server Error')
 
         result = json.dumps(data)
 

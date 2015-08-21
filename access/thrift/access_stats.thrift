@@ -17,6 +17,6 @@ struct kwargs {
 }
 
 service AccessStats {
-    string document(1:string code, 2: string collection),
+    string document(1:string code, 2: string collection) throws (1:ValueError value_err, 2:ServerError server_err),
     string search(2: string body, 3: optional list<kwargs> parameters) throws (1:ValueError value_err, 2:ServerError server_err)
 }

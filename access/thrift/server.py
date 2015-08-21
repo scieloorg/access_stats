@@ -28,7 +28,7 @@ class Dispatcher(object):
         try:
             data = self._stats.access_stats(*args, **kwargs)
         except ValueError as e:
-            logging.error(e.message)
+            logger.error(e.message)
             raise access_stats_thrift.ValueError(message=e.message)
         except ServerError as e:
             raise access_stats_thrift.ServerError(message=e.message)
@@ -44,7 +44,7 @@ class Dispatcher(object):
         try:
             data = self._stats.access_search(params)
         except ValueError as e:
-            logging.error(e.message)
+            logger.error(e.message)
             raise access_stats_thrift.ValueError(message=e.message)
         except ServerError as e:
             raise access_stats_thrift.ServerError(message=e.message)
@@ -52,7 +52,7 @@ class Dispatcher(object):
         try:
             data_str = json.dumps(data)
         except ValueError as e:
-            logging.error('Invalid JSON data: %s' % data_str)
+            logger.error('Invalid JSON data: %s' % data_str)
             raise access_stats_thrift.ValueError(message=e.message)
 
         return data_str
@@ -62,9 +62,12 @@ class Dispatcher(object):
         try:
             data = self._stats.document(code, collection)
         except ValueError as err:
+            logger.error('Server Error: %s' % data_str)
             raise access_stats_thrift.ServerError(
                 'Fail to retrieve data from server: %s' % err.message
             )
+        except ServerError as e:
+            raise access_stats_thrift.ServerError(message=e.message)
 
         result = json.dumps(data)
 

@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     client = make_client(
         access_stats_thrift.AccessStats,
-        '127.0.0.1',
+        'ratchet.scielo.org',
         11640
     )
 

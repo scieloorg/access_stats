@@ -91,8 +91,8 @@ class Stats(Elasticsearch):
         except elasticsearch.ConnectionError as e:
             logging.error('ElasticSearch ConnectionError: %s' % e.error)
             raise ServerError()
-        except:
-            logging.error("Unexpected error: %s" % sys.exc_info()[0])
+        except Exception as e:
+            logging.exception(e)
             raise ServerError()
 
         return data

@@ -101,7 +101,7 @@ class Stats(Elasticsearch):
 
     def access_search(self, parameters):
 
-        parameters['index'] = 'access_counter'
+        parameters['index'] = 'accesses'
         query_result = self._query_dispatcher(**parameters)
 
         return query_result
@@ -155,7 +155,7 @@ class Stats(Elasticsearch):
         }
 
         query_result = self._query_dispatcher(
-            index='accesses_counter',
+            index='accesses',
             doc_type='articles',
             body=body,
             size=0
@@ -219,7 +219,7 @@ class Stats(Elasticsearch):
             }
 
         query_result = self._query_dispatcher(
-            index='accesses_counter',
+            index='accesses',
             doc_type=doc_type,
             search_type='count',
             body=body

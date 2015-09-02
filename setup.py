@@ -27,7 +27,7 @@ test_requires = []
 
 setup(
     name="access",
-    version='0.1.2',
+    version='0.1.3',
     description="A SciELO RPC server and API to retrieve access statistics from the SciELO Network ",
     author="SciELO",
     author_email="scielo-dev@googlegroups.com",

@@ -41,8 +41,13 @@ class Dispatcher(object):
 
     def search(self, body, parameters):
 
-        params = {i.key:i.value for i in parameters}
+        if parameters:
+            params = {i.key:i.value for i in parameters}
+        else:
+            params = {}
+
         params['doc_type'] = 'articles'
+
         params['body'] = json.loads(body)
 
         try:

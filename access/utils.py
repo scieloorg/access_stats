@@ -1,8 +1,8 @@
-#coding: utf-8
+# coding: utf-8
 import os
 import weakref
 
-from ConfigParser import SafeConfigParser
+from configparser import SafeConfigParser
 
 
 class SingletonMixin(object):
@@ -15,7 +15,7 @@ class SingletonMixin(object):
     """
     _instances = weakref.WeakValueDictionary()
 
-    def __new__(cls, *args, **kwargs):
+    def __call__(cls, *args, **kwargs):
         key = (cls, args, tuple(kwargs.items()))
 
         if key in cls._instances:
@@ -51,7 +51,7 @@ class Configuration(SingletonMixin):
 
         ``filepath`` is a text string.
         """
-        fp = open(filepath, 'rb')
+        fp = open(filepath, 'r')
         return cls(fp)
 
     def __getattr__(self, attr):

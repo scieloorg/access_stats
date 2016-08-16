@@ -23,6 +23,7 @@ ALLOWED_DOC_TYPES_N_FACETS = {
     ]
 }
 
+
 def construct_aggs(aggs, size=0):
     """
     Construct the ElasticSearch aggretions query according to a list of
@@ -31,6 +32,7 @@ def construct_aggs(aggs, size=0):
 
     data = {}
     point = None
+
     def join(field, point=None):
         default = {
             field: {
@@ -63,16 +65,15 @@ def construct_aggs(aggs, size=0):
 
 def stats(*args, **kwargs):
 
-
-    print args
-    if not 'hosts' in kwargs:
+    if 'hosts' not in kwargs:
         kwargs['hosts'] = ['esd.scielo.org']
 
     kwargs['timeout'] = kwargs.get('timeout', 60)
 
-    st  = Stats(*args, **kwargs)
+    st = Stats(*args, **kwargs)
 
     return st
+
 
 class ServerError(Exception):
 
@@ -81,6 +82,7 @@ class ServerError(Exception):
 
     def __str__(self):
         return repr(self.message)
+
 
 class Stats(Elasticsearch):
 
@@ -119,7 +121,8 @@ class Stats(Elasticsearch):
                             "match": {
                                 "pid": code
                             }
-                        },{
+                        },
+                        {
                             "match": {
                                 "collection": collection
                             }
@@ -179,16 +182,16 @@ class Stats(Elasticsearch):
                 )
             )
 
-        if not doc_type in ALLOWED_DOC_TYPES_N_FACETS.keys():
+        if doc_type not in ALLOWED_DOC_TYPES_N_FACETS.keys():
             raise ValueError(
                 u'DocumentType not allowed, %s, expected %s' % (
                     doc_type,
                     str(ALLOWED_DOC_TYPES_N_FACETS.keys())
                 )
             )
-        
+
         for agg in aggs:
-            if not agg in ALLOWED_DOC_TYPES_N_FACETS[doc_type]:
+            if agg not in ALLOWED_DOC_TYPES_N_FACETS[doc_type]:
                 raise ValueError(
                     u'Aggregation not allowed, %s, expected %s' % (
                         aggs,
@@ -207,14 +210,14 @@ class Stats(Elasticsearch):
         if filters:
             must_terms = []
             for param, value in filters.items():
-                if not param in ALLOWED_DOC_TYPES_N_FACETS[doc_type]:
+                if param not in ALLOWED_DOC_TYPES_N_FACETS[doc_type]:
                     raise ValueError(
                         u'Filter not allowed, %s expected %s' % (
                             param,
                             str(ALLOWED_DOC_TYPES_N_FACETS[doc_type])
                         )
                     )
-                must_terms.append({'term': {param:value}})
+                must_terms.append({'term': {param: value}})
 
             body['query'] = {
                 "bool": {

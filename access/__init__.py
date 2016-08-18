@@ -15,8 +15,7 @@ def main(global_config, **settings):
 
     def add_index(request):
         return controller.stats(
-            hosts=hosts,
-            sniff_on_connection_fail=True
+            hosts=hosts
         )
 
     config.include('pyramid_chameleon')

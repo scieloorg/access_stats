@@ -65,8 +65,6 @@ def construct_aggs(aggs, size=0):
 
 def stats(*args, **kwargs):
 
-    import pdb; pdb.set_trace()
-
     if 'hosts' not in kwargs:
         kwargs['hosts'] = ['127.0.0.1']
 

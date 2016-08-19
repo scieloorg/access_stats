@@ -66,7 +66,7 @@ def construct_aggs(aggs, size=0):
 def stats(*args, **kwargs):
 
     if 'hosts' not in kwargs:
-        kwargs['hosts'] = ['esd.scielo.org']
+        kwargs['hosts'] = ['127.0.0.1']
 
     kwargs['timeout'] = kwargs.get('timeout', 60)
 

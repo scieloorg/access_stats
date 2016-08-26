@@ -18,6 +18,8 @@ RUN pip install gunicorn
 
 ENV ACCESSSTATS_SETTINGS_FILE=/app/production.ini
 
+RUN cd src/access-stats && python setup.py test && cd -
+
 EXPOSE 11620
 EXPOSE 8000
 

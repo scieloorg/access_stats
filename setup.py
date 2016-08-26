@@ -11,7 +11,7 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
 
 install_requires = [
     'requests>=2.6.0',
-    'elasticsearch>=1.3.0',
+    'elasticsearch>=1.5.0',
     'cython>=0.22',
     'thriftpy>=0.2.0',
     'thriftpywrap',
@@ -27,7 +27,7 @@ test_requires = []
 
 setup(
     name="access",
-    version='0.2.4',
+    version='0.3.4',
     description="A SciELO RPC server and API to retrieve access statistics from the SciELO Network ",
     author="SciELO",
     author_email="scielo-dev@googlegroups.com",

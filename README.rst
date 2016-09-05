@@ -29,7 +29,7 @@ Como utilizar esta imagem
 
 $ docker run --name my-access_stats -d my-access_stats
 
-Como configurar o ELASTICSEARCH_HOST
+Como configurar o ELASTICSEARCH
 
 $ docker run --name my-access_stats -e ELASTICSEARCH=my_eshost:9200 -d my-access_stats
 

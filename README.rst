@@ -31,7 +31,7 @@ $ docker run --name my-access_stats -d my-access_stats
 
 Como configurar o ELASTICSEARCH_HOST
 
-$ docker run --name my-access_stats -e ELASTICSEARCH_HOST=my_eshost:27017 -d my-access_stats my-access_stats
+$ docker run --name my-access_stats -e ELASTICSEARCH=my_eshost:9200 -d my-access_stats
 
 Os serviços ativos nesta imagem são:
 
@@ -40,4 +40,4 @@ Thrift Server: 127.0.0.1:11620
 
 É possível mapear essas portas para o hosting dos containers da seguinte forma:
 
-$ docker run --name my-access_stats -e MONGODB_HOST=my_eshost:27017 -p 8000:8000 -p 11620:11620 -d my-access_stats my-access_stats
+$ docker run --name my-access_stats -e ELASTICSEARCH=my_eshost:9200 -p 8000:8000 -p 11620:11620 -d my-access_stats

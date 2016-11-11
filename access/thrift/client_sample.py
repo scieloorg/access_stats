@@ -13,8 +13,14 @@ if __name__ == '__main__':
 
     client = make_client(
         access_stats_thrift.AccessStats,
-        'ratchet.scielo.org',
-        11640
+        'localhost',
+        11660
     )
 
-    print(json.loads(client.document('S1807-86212013000200003', 'scl')))
+    #print(json.loads(client.document('S1807-86212013000200003', 'scl')))
+
+    query_parameters = [
+        access_stats_thrift.kwargs('size', '0')
+    ]
+
+    print(json.loads(client.search('{}', query_parameters)))

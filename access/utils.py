@@ -2,7 +2,10 @@
 import os
 import weakref
 
-from configparser import SafeConfigParser
+try:
+    from configparser import ConfigParser
+except:
+    from ConfigParser import ConfigParser
 
 
 class SingletonMixin(object):
@@ -31,7 +34,7 @@ class Configuration(SingletonMixin):
     """
     Acts as a proxy to the ConfigParser module
     """
-    def __init__(self, fp, parser_dep=SafeConfigParser):
+    def __init__(self, fp, parser_dep=ConfigParser):
         self.conf = parser_dep()
         self.conf.readfp(fp)
 

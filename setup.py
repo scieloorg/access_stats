@@ -10,12 +10,12 @@ with open(os.path.join(here, 'CHANGES.txt')) as f:
     CHANGES = f.read()
 
 install_requires = [
-    'requests>=2.6.0',
+    'requests>=2.8.1',
     'elasticsearch>=1.5.0',
     'cython>=0.22',
-    'thriftpy>=0.2.0',
+    'thriftpy>=0.3.1',
     'thriftpywrap',
-    'xylose',
+    'xylose>=1.16.5',
     'pyramid>=1.5.7',
     'pyramid_chameleon',
     'pyramid_mako',
@@ -27,7 +27,7 @@ test_requires = []
 
 setup(
     name="access",
-    version='0.5.4',
+    version='0.6.4',
     description="A SciELO RPC server and API to retrieve access statistics from the SciELO Network ",
     author="SciELO",
     author_email="scielo-dev@googlegroups.com",
@@ -47,7 +47,6 @@ setup(
         "Topic :: Internet :: WWW/HTTP :: WSGI :: Application",
     ],
     dependency_links=[
-        "git+https://github.com/scieloorg/xylose@v1.15.5#egg=xylose",
         "git+https://github.com/scieloorg/thriftpy-wrap@0.1.1#egg=thriftpywrap"
     ],
     include_package_data=True,

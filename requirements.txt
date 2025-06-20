@@ -6,3 +6,4 @@ pyramid==1.5.7
 xylose==1.16.5
 -e git+https://github.com/scieloorg/thriftpy-wrap@0.1.1#egg=thriftpywrap
 -e git+https://github.com/scieloorg/access_stats@0.6.4#egg=access
+urllib3>=2.5.0 # not directly required, pinned by Snyk to avoid a vulnerability
